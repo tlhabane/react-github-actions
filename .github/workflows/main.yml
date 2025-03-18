@@ -1,7 +1,6 @@
 name: DevOps-GitHibActions
 on: push
 jobs:
-  # Build Job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -9,17 +8,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Node
         uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
       - name: Install Dependencies
-        run: npm install
+        run: npm i
       - name: Build Project
         run: npm run build
-      - name: Upload artifact to enable deployment
+      - name: Upload Artifact to enable deployment
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-# Deploy Job
+          path: ./dist
+ # Deploy Job
   deploy:
     # Add a dependency to the build job
     needs: build
@@ -35,5 +33,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.REACT_GITHUB_ACTIONS }}
-          publish_dir: ./dist          
-          path: ./dist
+          publish_dir: ./dist
